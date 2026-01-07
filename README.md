@@ -12,4 +12,4 @@ In this way you can upload data from the repository you dowonloaded
 2) if you have locally downloaded the updated version of the GTEx data, then the GUI can be run by connecting to
    https://stampgui-n2mm84ueuclex9zggm93jv.streamlit.app/
 
-   Dataset can be downloaded at:  https://gtexportal.org/home/  n
+   Dataset can be downloaded at:  https://gtexportal.org/home/  
