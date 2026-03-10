@@ -10,6 +10,6 @@ then from your browser link to http://localhost:8501
 In this mode, you can use the full interface locally, including the data-generation modules. You can either generate new files and analyze them, or load the pre-computed files described in Section 2.
 
 2) You can also use the online version of the STAMP GUI:
-   https://stampguilight1-clgeuxgs4rpkvhgivy6chl.streamlit.app/
+  https://stampgui.streamlit.app/
    
 Original Dataset can be downloaded at:  https://gtexportal.org/home/  
