@@ -1,15 +1,23 @@
 # STAMP
 Discovering Spatiotemporal Gene Signatures Across Aging with the STAMP Framework
-This repository contains the link to the Graphical User Interface for STAMP. You can run in two different way:
 
-1) Full code and data: to run the GUI of STAMP please download the code and db of the GUI_Stamp tool 
-from https://drive.google.com/drive/folders/10_oSYnsHfPSfqheOeHJ-ux607b0woXGh?usp=sharing
-then in a Linux environment 
-sudo docker run -p 8501:8501 gui_stamp_full
-then from your browser link to http://localhost:8501
-In this mode, you can use the full interface locally, including the data-generation modules. You can either generate new files and analyze them, or load the pre-computed files described in Section 2.
+This repository provides access to the Graphical User Interface (GUI) for the STAMP framework. The interface can be used in two different ways:
 
-2) You can also use the online version of the STAMP GUI:
-  https://stampgui.streamlit.app/
-   
-Original Dataset can be downloaded at:  https://gtexportal.org/home/  
+1) Local version (Docker): to run the STAMP GUI locally, download the Docker image from  
+https://drive.google.com/file/d/17YWeE36WNdqy4GyanaVnCAJ8esgsIB_Z/view?usp=sharing  
+
+Then run the following command:
+
+docker run -p 8501:8501 gui_stamp_v2
+
+After that, open your browser and go to:
+http://localhost:8501
+
+In this mode the interface runs locally on your machine.
+
+2) Online version: you can also use the deployed STAMP GUI directly from the web:
+
+https://stampgui.streamlit.app/
+
+Original dataset can be downloaded from:  
+https://gtexportal.org/home/
