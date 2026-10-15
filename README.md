@@ -1,23 +1,80 @@
 # STAMP
-Discovering Spatiotemporal Gene Signatures Across Aging with the STAMP Framework
 
-This repository provides access to the Graphical User Interface (GUI) for the STAMP framework. The interface can be used in two different ways:
+[Open the application](https://stampgui2.streamlit.app/)
 
-1) Local version (Docker): to run the STAMP GUI locally, download the Docker image from  
-https://drive.google.com/file/d/17YWeE36WNdqy4GyanaVnCAJ8esgsIB_Z/view?usp=sharing  
+STAMP explores gene switching across age groups using GTEx v10.
 
-Then run the following command:
+## Run locally with a Docker container
 
-docker run -p 8501:8501 gui_stamp_v2
+Start [Docker Desktop](https://docs.docker.com/get-started/get-docker/) and download
+[the Docker image](https://github.com/mattiazic99/stamp_streamlit_cloud/releases/download/review-2026-10-06/stamp-interface-linux-amd64.tar)
+([SHA-256 checksum](https://github.com/mattiazic99/stamp_streamlit_cloud/releases/download/review-2026-10-06/stamp-interface-linux-amd64.tar.sha256)).
+The image includes the interface and atlas for `linux/amd64`; Apple Silicon Macs
+require amd64 emulation. From the download folder, run:
 
-After that, open your browser and go to:
-http://localhost:8501
+```bash
+docker load --input stamp-interface-linux-amd64.tar
+docker run --detach --name stamp-interface --publish 127.0.0.1:8501:8501 stamp-interface:latest
+```
 
-In this mode the interface runs locally on your machine.
+Open [localhost:8501](http://localhost:8501). Stop with `docker stop stamp-interface`
+and restart with `docker start stamp-interface`. To replace the container,
+stop it and run `docker rm stamp-interface` before loading a newer image.
 
-2) Online version: you can also use the deployed STAMP GUI directly from the web:
+Alternatively, build from the repository with `docker compose up --build --wait`;
+stop with `docker compose down`. Use one Docker method at a time.
 
-https://stampgui.streamlit.app/
+Generated files stay in session memory. Download the ZIP
+to save them on your computer; **Start New Generation** clears the current results.
 
-Original dataset can be downloaded from:  
-https://gtexportal.org/home/
+## Statistical reproducibility
+
+Use a separate **Python 3.11** environment with the pinned numerical dependencies.
+Run all commands from the repository root. Confirm that `python --version`
+reports 3.11 before creating the environment.
+
+```bash
+python -m venv .venv-reproduction
+```
+
+Use the environment's executable directly; activation is not required.
+The commands below use Windows PowerShell. On Linux/macOS, replace
+`.\.venv-reproduction\Scripts\python.exe` with `.venv-reproduction/bin/python`.
+
+```powershell
+.\.venv-reproduction\Scripts\python.exe -m pip install -r requirements-reproduction.lock.txt
+.\.venv-reproduction\Scripts\python.exe -m statistical_validation_cli.paper check-reference
+```
+
+`check-reference` checks the committed reference tables; it does not rerun experiments.
+
+To check a fresh replay using the bundled Ovary data:
+
+```powershell
+.\.venv-reproduction\Scripts\python.exe -m statistical_validation_cli.paper replay --demo
+```
+
+This checks short sequence prefixes on one tissue, not the full manuscript analysis.
+
+For the complete analysis, obtain the nine input parts listed in
+`reproducibility/input_bundle.json` and place them in `input-parts/`.
+**The complete input download is not yet published; it is separate from the code.**
+
+```powershell
+.\.venv-reproduction\Scripts\python.exe -m statistical_validation_cli.input_bundle --bundle-dir input-parts
+.\.venv-reproduction\Scripts\python.exe -m statistical_validation_cli.paper check-inputs
+.\.venv-reproduction\Scripts\python.exe -m statistical_validation_cli.paper run --jobs 2
+```
+
+The full run recomputes permutation tests, bootstrap stability, both SMOTE policies
+and threshold sensitivity, then checks the results against the manuscript references.
+Outputs are saved in `output/reproduction/`; `paper_verified.json` is written after
+successful verification. A full run requires substantially more time and memory
+than the demo.
+
+**A fresh complete 50-tissue run with this reproduction command has not yet been
+completed.** [GitHub CI](https://github.com/mattiazic99/stamp_streamlit_cloud/actions)
+has passed the reference checks, fresh demo and interface container checks.
+
+Input hashes, numerical settings and verification details are documented in
+[the reproduction protocol](reproducibility/README.md).
